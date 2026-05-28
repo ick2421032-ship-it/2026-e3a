@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RE-ARCH / 課題研究デジタルポートフォリオ</title>
+    <title>RESEARCH LOG / 課題研究日誌</title>
     <style>
-        /* カッコよさを極めるための独自変数設定（SF・サイバーテイスト） */
+        /* サイバー・開発ログ風のカラーパレット */
         :root {
-            --bg-main: #0d1117;       /* GitHubのダークモードに近い洗練された黒 */
-            --bg-card: #161b22;       /* カード部分の少し明るいコンポーネント色 */
-            --accent-neon: #58a6ff;   /* サイバーブルー */
-            --accent-glow: #1f6feb;   /* 深みのあるブルー */
-            --text-primary: #c9d1d9;  /* 読みやすいライトグレー */
-            --text-muted: #8b949e;     /* 補足用のグレー */
-            --border-color: #30363d;  /* 近未来感を出す境界線 */
+            --bg-main: #0d1117;       /* GitHubダーク */
+            --bg-card: #161b22;       /* カード背景 */
+            --accent-neon: #38bdf8;   /* 鮮やかなライトブルー */
+            --accent-purple: #a855f7; /* アクセントパープル */
+            --text-primary: #f8fafc;  /* メイン文字 */
+            --text-muted: #94a3b8;     /* サブ文字 */
+            --border-color: #334155;  /* 境界線 */
         }
 
         * {
@@ -23,21 +23,21 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-main);
             color: var(--text-primary);
             line-height: 1.8;
-            padding-bottom: 60px;
+            padding-bottom: 80px;
         }
 
-        /* 画面上部のサイバーなインジケーターライン */
+        /* 上部のグラデーションライン */
         .top-bar {
             height: 4px;
-            background: linear-gradient(90deg, #58a6ff, #bc8cff, #8b5cf6);
+            background: linear-gradient(90deg, var(--accent-neon), var(--accent-purple));
             width: 100%;
         }
 
-        /* グローバルナビゲーション（アプリ風） */
+        /* ナビゲーションバー */
         .navbar {
             background-color: rgba(22, 27, 34, 0.8);
             backdrop-filter: blur(12px);
@@ -55,177 +55,175 @@
             font-weight: 700;
             font-size: 1.1rem;
             letter-spacing: 2px;
-            color: #fff;
+            font-family: monospace;
         }
 
         .nav-logo span {
             color: var(--accent-neon);
         }
 
-        .github-badge {
-            background: #21262d;
-            border: 1px solid var(--border-color);
+        .status-badge {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--accent-neon);
             padding: 4px 12px;
             border-radius: 6px;
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: var(--accent-neon);
             font-family: monospace;
         }
 
-        /* メインコンテナ */
-        .main-container {
-            max-width: 1000px;
+        /* メイン容器 */
+        .container {
+            max-width: 850px;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
-        /* ヒーローセクション（タイトルエリア） */
-        .hero {
+        /* ヘッダーエリア */
+        .header-area {
             text-align: center;
-            padding: 60px 0;
-            border-bottom: 1px solid var(--border-color);
+            padding: 40px 0;
             margin-bottom: 40px;
         }
 
-        .project-tag {
-            display: inline-block;
-            background: rgba(88, 166, 255, 0.1);
-            color: var(--accent-neon);
-            border: 1px solid rgba(88, 166, 255, 0.2);
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            color: #fff;
+        .header-area h1 {
+            font-size: 2.3rem;
             font-weight: 800;
             letter-spacing: -0.5px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .hero p {
+        .header-area p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
-        /* グリッドレイアウト（情報の整理） */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
+        /* ==========================================
+           タイムライン（日誌）のコアデザイン
+        ========================================== */
+        .timeline {
+            position: relative;
+            border-left: 2px solid var(--border-color); /* 中央を走る縦線 */
+            padding-left: 30px;
+            margin-left: 10px;
         }
 
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            .hero h1 { font-size: 1.8rem; }
+        /* 日誌の1ブロック */
+        .log-item {
+            position: relative;
+            margin-bottom: 40px;
         }
 
-        /* カード型コンポーネント */
-        .card {
+        /* タイムラインの「点」 */
+        .log-item::before {
+            content: "";
+            position: absolute;
+            left: -41px; /* 縦線の上にぴったり重ねる調整 */
+            top: 24px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--bg-main);
+            border: 4px solid var(--accent-neon);
+            z-index: 1;
+            transition: background-color 0.3s;
+        }
+
+        /* 最新の日誌の点だけ色を変えて目立たせる */
+        .log-item.latest::before {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-purple);
+        }
+
+        /* 日誌のカード */
+        .log-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 28px;
-            margin-bottom: 24px;
+            padding: 24px;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
-        .card:hover {
+        .log-card:hover {
             border-color: var(--accent-neon);
-            box-shadow: 0 0 15px rgba(88, 166, 255, 0.1);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
         }
 
-        /* セクションタイトル */
-        .card h2 {
-            font-size: 1.25rem;
-            color: #fff;
-            margin-bottom: 20px;
+        .log-item.latest .log-card:hover {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.1);
+        }
+
+        /* 日誌のヘッダー（日付とタグ） */
+        .log-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            font-weight: 600;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 10px;
         }
 
-        .card h2::before {
-            content: '$';
-            color: var(--accent-neon);
-            margin-right: 10px;
+        .log-date {
             font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        /* 最新ログ用のバッジ */
+        .latest-tag {
+            background: linear-gradient(45deg, var(--accent-purple), #ec4899);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
             font-weight: bold;
         }
 
-        /* データを際立たせるボックス */
-        .terminal-box {
-            background-color: #0d1117;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #58a6ff;
-            margin: 15px 0;
-        }
-
-        /* メトリクス（数値を目立たせるパーツ） */
-        .metrics-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .metric-item {
-            background: #21262d;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-        }
-
-        .metric-value {
-            font-size: 1.8rem;
-            font-weight: 700;
+        .log-title {
+            font-size: 1.2rem;
             color: #fff;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
-        .metric-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        /* リストの装飾 */
-        ul {
-            list-style: none;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 20px;
-            margin-bottom: 12px;
+        /* 日誌内の箇条書きやテキスト */
+        .log-body p {
             color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
-        ul li::before {
-            content: "■";
+        .log-body ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+
+        .log-body ul li {
+            position: relative;
+            padding-left: 18px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .log-body ul li::before {
+            content: ">";
             position: absolute;
             left: 0;
             color: var(--accent-neon);
-            font-size: 0.7rem;
-            top: 2px;
+            font-family: monospace;
+            font-weight: bold;
         }
 
         /* フッター */
         footer {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 80px;
             color: var(--text-muted);
             font-size: 0.85rem;
             font-family: monospace;
@@ -237,98 +235,74 @@
     <div class="top-bar"></div>
 
     <div class="navbar">
-        <div class="nav-logo">RE<span>ARCH</span></div>
-        <div class="github-badge">REPOSITORY // PAGES</div>
+        <div class="nav-logo">RESEARCH_<span>LOG</span></div>
+        <div class="status-badge">STATUS: ACTIVE</div>
     </div>
 
-    <div class="main-container">
+    <div class="container">
 
-        <div class="hero">
-            <span class="project-tag">2026_RESEARCH_PROJECT</span>
-            <h1>ここに研究のメインタイトルを入力</h1>
-            <p>〇〇県立〇〇高等学校 科学部 / 課題研究班</p>
+        <div class="header-area">
+            <h1>課題研究 活動日誌</h1>
+            <p>〇〇県立〇〇高等学校 科学部 / 開発・実験データログ</p>
         </div>
 
-        <div class="dashboard-grid">
-            
-            <div class="main-content">
-                
-                <div class="card">
-                    <h2>ABSTRACT / 概要</h2>
-                    <p>この研究の目的、実験方法、そして得られた結論を数行でシンプルに記述します。GitHub上で動くスマートなデータ分析ダッシュボードのような世界観で、研究の新規性を引き立てます。</p>
-                </div>
+        <div class="timeline">
 
-                <div class="card">
-                    <h2>BACKGROUND / 研究の背景と目的</h2>
-                    <p>現代社会における〇〇の課題や、自分たちが疑問に思った背景を記述します。</p>
-                    <div class="terminal-box">
-                        [MISSION] >> 〇〇の現象を検証し、新たなメカニズムを解明せよ。
+            <div class="log-item latest">
+                <div class="log-card">
+                    <div class="log-header">
+                        <div class="log-date">2026.05.28</div>
+                        <div class="latest-tag">LATEST LOG</div>
+                    </div>
+                    <div class="log-title">実験データの検証とグラフ化の実施</div>
+                    <div class="log-body">
+                        <p>これまでに蓄積した過去1ヶ月分の測定データをExcelおよびPythonを用いて解析した。特定の条件下において、数値が予測値より20%以上上振れする現象を確認。</p>
+                        <ul>
+                            <li>データの異常値（ノイズ）のフィルタリング処理を完了</li>
+                            <li>次回、この上振れが再現するかどうか再実験の計画を策定</li>
+                            <li>中間発表に向けてスライドの骨子を作成開始</li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="card">
-                    <h2>METHOD / 実験・調査方法</h2>
-                    <p>どのようにデータを集め、検証したのかをステップ順に記載します。</p>
-                    <ul>
-                        <li>特定条件下におけるサンプルのサンプリング（n=100）</li>
-                        <li>デジタルセンサーを用いた、24時間連続の時間経過観測</li>
-                        <li>取得した生データの統計的有意差検定の実施</li>
-                    </ul>
+            </div>
+            <div class="log-item">
+                <div class="log-card">
+                    <div class="log-header">
+                        <div class="log-date">2026.05.15</div>
+                    </div>
+                    <div class="log-title">中間報告書の作成と班内ミーティング</div>
+                    <div class="log-body">
+                        <p>担当教諭に現在の進捗を報告し、今後の方向性についてフィードバックをいただいた。アプローチ方法を少し修正する必要が出てきたため、役割分担を再調整した。</p>
+                        <ul>
+                            <li>先行研究の論文を新たに3本読み込み、参考文献に追加</li>
+                            <li>アンケート調査の項目（質問案）をブラッシュアップ</li>
+                        </ul>
+                    </div>
                 </div>
-
-                <div class="card">
-                    <h2>RESULTS / 実験結果と考察</h2>
-                    <p>実験によって何が分かったのか、グラフや数値をもとに論理的に記述します。</p>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">
-                        ※ここに <code>&lt;img src="graph.png" style="width:100%; border-radius:6px; margin-top:10px;"&gt;</code> のように書くと、自作のグラフ画像を綺麗に埋め込めます。
-                    </p>
-                </div>
-
             </div>
 
-            <div class="sidebar">
-                
-                <div class="card">
-                    <h2>DATA METRICS</h2>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">研究に関する主要な数値をアピールできます。</p>
-                    <div class="metrics-container">
-                        <div class="metric-item">
-                            <div class="metric-value">120%</div>
-                            <div class="metric-label">効率向上</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-value">45日間</div>
-                            <div class="metric-label">実験期間</div>
-                        </div>
+            <div class="log-item">
+                <div class="log-card">
+                    <div class="log-header">
+                        <div class="log-date">2026.04.20</div>
+                    </div>
+                    <div class="log-title">研究テーマの決定と機材・環境の準備</div>
+                    <div class="log-body">
+                        <p>今年度の課題研究のテーマを「〇〇における〇〇の影響について」に正式決定。GitHub上にリポジトリを作成し、本日のログより活動記録の公開を開始する。</p>
+                        <ul>
+                            <li>班の目標設定と、8月までのロードマップ（予定表）の作成</li>
+                            <li>実験用サンプルおよび測定機材のセットアップ完了</li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="card">
-                    <h2>TEAM</h2>
-                    <p style="font-size: 0.9rem; margin-bottom: 5px;"><strong>研究メンバー：</strong></p>
-                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">班長：〇〇 〇〇 / 班員：〇〇 〇〇、〇〇 〇〇</p>
-                    <p style="font-size: 0.9rem; margin-bottom: 5px;"><strong>指導教諭：</strong></p>
-                    <p style="font-size: 0.9rem; color: var(--text-muted);">〇〇 先生</p>
-                </div>
-
-                <div class="card">
-                    <h2>REFERENCES</h2>
-                    <ul style="font-size: 0.8rem; color: var(--text-muted);">
-                        <li>著者名『論文タイトル』(2025)</li>
-                        <li>〇〇学会「公開データシート」</li>
-                    </ul>
-                </div>
-
             </div>
 
         </div>
-
         <footer>
-            <p>&copy; 2026 REARCH Project. Deployed via GitHub Pages.</p>
+            <p>&copy; 2026 課題研究チーム名. Tracked via GitHub/Git.</p>
         </footer>
 
     </div>
 
 </body>
 </html>
-
