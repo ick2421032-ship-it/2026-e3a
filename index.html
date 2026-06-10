@@ -101,12 +101,10 @@
             font-size: 1rem;
         }
 
-        /* ==========================================
-           タイムライン（日誌）のコアデザイン
-        ========================================== */
+        /* タイムラインのデザイン */
         .timeline {
             position: relative;
-            border-left: 2px solid var(--border-color); /* 中央を走る縦線 */
+            border-left: 2px solid var(--border-color);
             padding-left: 30px;
             margin-left: 10px;
         }
@@ -121,7 +119,7 @@
         .log-item::before {
             content: "";
             position: absolute;
-            left: -41px; /* 縦線の上にぴったり重ねる調整 */
+            left: -41px;
             top: 24px;
             width: 16px;
             height: 16px;
@@ -157,7 +155,7 @@
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.1);
         }
 
-        /* 日誌のヘッダー（日付とタグ） */
+        /* 日誌のヘッダー */
         .log-header {
             display: flex;
             justify-content: space-between;
@@ -192,7 +190,7 @@
             font-weight: 600;
         }
 
-        /* 日誌内の箇条書きやテキスト */
+        /* 日誌内のテキスト */
         .log-body p {
             color: var(--text-primary);
             margin-bottom: 10px;
@@ -243,7 +241,7 @@
 
         <div class="header-area">
             <h1>課題研究 活動日誌</h1>
-            <p>千葉県立市川工業高等学校 4班 / 活動報告</p>
+            <p>〇〇県立〇〇高等学校 科学部 / 開発・実験データログ</p>
         </div>
 
         <div class="timeline">
@@ -251,8 +249,33 @@
             <div class="log-item latest">
                 <div class="log-card">
                     <div class="log-header">
-                        <div class="log-date">2026.05.28<br>2026.06.10</div>
+                        <div class="log-date">2026.06.10</div>
                         <div class="latest-tag">LATEST LOG</div>
                     </div>
-                    <div class="log-title">機材の選定</div>
-                  
+                    <div class="log-title">ラズベリーパイ3の動作確認およびプログラム</div>
+                    <div class="log-body">
+                        <p＿＿＿</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="log-item">
+                <div class="log-card">
+                    <div class="log-header">
+                        <div class="log-date">2026.05.28</div>
+                    </div>
+                    <div class="log-title">購入物品の選定</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <footer>
+            <p>&copy; 2026 課題研究チーム名. Tracked via GitHub/Git.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
